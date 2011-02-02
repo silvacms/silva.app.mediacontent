@@ -4,32 +4,29 @@
 from five import grok
 
 from zope.i18nmessageid import MessageFactory
-from zope import schema
-from zope.interface import Interface
+
 from AccessControl import ClassSecurityInfo
+from App.class_init import InitializeClass
 
 from zeam.form import silva as silvaforms
 
 from silva.core.conf.interfaces import ITitledContent
-from silva.core import interfaces as silvainterfaces
 from silva.core import conf as silvaconf
+from silva.core.views import views as silvaviews
 from Products.Silva.Asset import Asset
 from Products.Silva import SilvaPermissions as perms
+from silva.app.mediacontent.interfaces import (IYouTubeVideo,
+    IYouTubeVideoFields)
 
 _ = MessageFactory('silva')
-
-
-class IYouTubeVideo(silvainterfaces.IAsset):
-    """ A video linked from you tube
-    """
 
 
 class YouTubeVideo(Asset):
     __doc__ = _('You tube video.')
 
-    meta_type = u'Silva YouTube Video'
-    silvaconf.priority(-10)
-    silvaconf.icon('static/contents/Youtube-icon.png')
+    meta_type = 'Silva YouTubeVideo'
+    silvaconf.priority(1100)
+    silvaconf.icon('youtube.png')
     grok.implements(IYouTubeVideo)
 
     security = ClassSecurityInfo()
@@ -43,25 +40,30 @@ class YouTubeVideo(Asset):
         return self._video_id
 
     security.declareProtected(perms.View, 'get_video_id')
-    def get_video_id(self, id):
+    def get_video_id(self):
         return self._video_id
 
 
-class IYouTubeVideoFields(Interface):
-    """ Fields for forms.
+InitializeClass(YouTubeVideo)
+
+
+class YouTubeView(silvaviews.View):
+    """Default view to render an embed youtube video.
     """
-    video_id = schema.TextLine(
-        title=_(u'video id'),
-        description=_(u'it is the id of the video on youtube.com,'
-                      u'it can be found in the url as "v" parameter'),
-        required=True)
+    grok.context(IYouTubeVideo)
+    width = '480'
+    height = '390'
+
+    @property
+    def video_id(self):
+        return self.context.get_video_id()
 
 
 class YouTubeVideoAddForm(silvaforms.SMIAddForm):
     """SMI add form for Silva YouTube Video.
     """
     grok.context(IYouTubeVideo)
-    grok.name(u'Silva YouTube Video')
+    grok.name(u'Silva YouTubeVideo')
     fields = silvaforms.Fields(ITitledContent, IYouTubeVideoFields)
 
 

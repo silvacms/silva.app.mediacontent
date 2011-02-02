@@ -8,9 +8,9 @@ from silva.core.conf.installer import DefaultInstaller
 from zope.interface import Interface
 
 
-silvaconf.extension_name("silva.app.document")
-silvaconf.extension_title("Silva new Document")
-silvaconf.extension_depends(["Silva", "silva.core.editor"])
+silvaconf.extension_name("silva.app.mediacontent")
+silvaconf.extension_title("Silva Media Content")
+silvaconf.extension_depends(["Silva"])
 
 
 class IMediaContentExtension(Interface):
@@ -19,6 +19,4 @@ class IMediaContentExtension(Interface):
 
 
 install = DefaultInstaller("silva.app.mediacontent", IMediaContentExtension)
-
-AccessControl.allow_module('silva.app.mediacontent')
 
