@@ -24,8 +24,8 @@ class IMediaContentVersion(interfaces.IVersion):
 class IMediaContentFields(Interface):
     """ Fields for forms
     """
-    description = schema.Text(
-        title=_('description'),
+    text = schema.Text(
+        title=_('text'),
         required=False)
     asset = Reference(interfaces.INonPublishable,
         title=_('asset'),

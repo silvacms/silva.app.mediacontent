@@ -22,6 +22,20 @@ from Products.Silva import SilvaPermissions as perms
 
 _ = MessageFactory('silva')
 
+def set_reference(content, target, name):
+    service = getUtility(IReferenceService)
+    reference = service.get_reference(
+        aq_inner(content), name=name, add=True)
+    if not isinstance(target, int):
+        target = get_content_id(target)
+    reference.set_target_id(target)
+
+def get_reference(content, name):
+    service = getUtility(IReferenceService)
+    reference = service.get_reference(
+        aq_inner(content), name=name, add=True)
+    return reference.target
+
 
 class MediaContentVersion(Version):
     """ Version for Media Content
@@ -30,50 +44,34 @@ class MediaContentVersion(Version):
 
     security = ClassSecurityInfo()
 
-    _description = None
+    _text = None
     _asset = None
     _link = None
 
-    security.declareProtected(perms.View, 'get_description')
-    def get_description(self):
-        return self._description
+    security.declareProtected(perms.View, 'get_text')
+    def get_text(self):
+        return self._text
 
-    security.declareProtected(perms.ChangeSilvaContent, 'set_description')
-    def set_description(self, description):
-        self._description = description
-        return self._description
+    security.declareProtected(perms.ChangeSilvaContent, 'set_text')
+    def set_text(self, text):
+        self._text = text
+        return self._text
 
     security.declareProtected(perms.View, 'get_asset')
     def get_asset(self):
-        service = getUtility(IReferenceService)
-        reference = service.get_reference(
-            aq_inner(self), name=u'asset', add=True)
-        return reference.target
+        return get_reference(self, u'asset')
 
     security.declareProtected(perms.ChangeSilvaContent, 'set_asset')
     def set_asset(self, target):
-        service = getUtility(IReferenceService)
-        reference = service.get_reference(
-            aq_inner(self), name=u'asset', add=True)
-        if not isinstance(target, int):
-            target = get_content_id(target)
-        reference.set_target_id(target)
+        return set_reference(self, target, u'asset')
 
     security.declareProtected(perms.View, 'get_link')
     def get_link(self):
-        service = getUtility(IReferenceService)
-        reference = service.get_reference(
-            aq_inner(self), name=u'link', add=True)
-        return reference.target
+        return get_reference(self, u'link')
 
     security.declareProtected(perms.ChangeSilvaContent, 'set_link')
     def set_link(self, target):
-        service = getUtility(IReferenceService)
-        reference = service.get_reference(
-            aq_inner(self), name=u'link', add=True)
-        if not isinstance(target, int):
-            target = get_content_id(target)
-        reference.set_target_id(target)
+        return set_reference(self, target, u'link')
 
 
 InitializeClass(MediaContentVersion)
