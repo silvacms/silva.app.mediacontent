@@ -97,6 +97,15 @@ class MediaContentView(silvaviews.View):
     """
     grok.context(interfaces.IMediaContent)
 
+    def update(self):
+        # fetch them only once
+        self.asset = self.content.get_asset()
+        self.link = self.content.get_link()
+
+    def get_formatted_text(self):
+        text = self.content.get_text() or u''
+        return text.replace('\n', '<br/>')
+
 
 class MediaContentEditForm(silvaforms.SMIEditForm):
     """SMI edit form for media content.
