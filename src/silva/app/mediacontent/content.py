@@ -25,7 +25,7 @@ _ = MessageFactory('silva')
 def set_reference(content, target, name):
     service = getUtility(IReferenceService)
     reference = service.get_reference(
-        aq_inner(content), name=name, add=True)
+        aq_inner(content), name=name, add=False)
     if not isinstance(target, int):
         target = get_content_id(target)
     reference.set_target_id(target)

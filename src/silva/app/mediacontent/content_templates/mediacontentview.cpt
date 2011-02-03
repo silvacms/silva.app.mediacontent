@@ -5,7 +5,7 @@
   <div class="media-content-title" tal:content="content.get_title()" />
   <p class="media-content-mediatext"
      tal:content="structure view.get_formatted_text()" />
-  <div class="media-content-more">
+  <div tal:condition="view.link" class="media-content-more">
     <a class="media-content-link"
         tal:attributes="href path: view/link/@@absolute_url"
         tal:content="view.link.get_title()" />
