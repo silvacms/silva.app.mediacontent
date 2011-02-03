@@ -107,7 +107,7 @@ class MediaContentView(silvaviews.View):
         return publish_parts(self.content.get_text() or '',
             settings_overrides=settings,
             parser_name='restructuredtext',
-            writer_name='html')['whole']
+            writer_name='html')['fragment']
 
 
 class MediaContentEditForm(silvaforms.SMIEditForm):
