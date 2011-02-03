@@ -45,8 +45,6 @@ class MediaContentVersion(Version):
     security = ClassSecurityInfo()
 
     _text = None
-    _asset = None
-    _link = None
 
     security.declareProtected(perms.View, 'get_text')
     def get_text(self):
