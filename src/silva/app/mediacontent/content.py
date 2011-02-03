@@ -1,5 +1,6 @@
 # Copyright (c) 2011 Infrae. All rights reserved.
 # See also LICENSE.txt
+from docutils.core import publish_parts
 
 from five import grok
 from zope.i18nmessageid import MessageFactory
@@ -101,8 +102,12 @@ class MediaContentView(silvaviews.View):
         self.link = self.content.get_link()
 
     def get_formatted_text(self):
-        text = self.content.get_text() or u''
-        return text.replace('\n', '<br/>')
+        settings = {'initial_header_level': 2,
+                    'default_output_encoding': 'utf-8',}
+        return publish_parts(self.content.get_text() or '',
+            settings_overrides=settings,
+            parser_name='restructuredtext',
+            writer_name='html')['whole']
 
 
 class MediaContentEditForm(silvaforms.SMIEditForm):

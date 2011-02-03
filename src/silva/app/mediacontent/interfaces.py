@@ -26,10 +26,11 @@ class IMediaContentFields(Interface):
     """
     text = schema.Text(
         title=_('text'),
+        description=_('Plain text or restructured text format'),
         required=False)
     asset = Reference(interfaces.INonPublishable,
         title=_('asset'),
-        description=_('image or video asset'),
+        description=_('Image or video asset'),
         required=False)
     link = Reference(interfaces.ISilvaObject,
         title=_('link'),
