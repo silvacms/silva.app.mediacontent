@@ -1,8 +1,8 @@
 <div class="media-content">
+  <div class="media-content-title" tal:content="content.get_title()" />
   <div class="media-content-asset"
     tal:condition="view.asset"
     tal:content="structure path:view/asset/@@content.html" />
-  <div class="media-content-title" tal:content="content.get_title()" />
   <p class="media-content-mediatext"
      tal:content="structure view.get_formatted_text()" />
   <div tal:condition="view.link" class="media-content-more">
