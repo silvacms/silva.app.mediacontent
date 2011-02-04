@@ -10,4 +10,8 @@
         tal:attributes="href path: view/link/@@absolute_url"
         tal:content="view.link.get_title()" />
   </div>
+  <div tal:condition="not view.link">
+    <a class="media-content-link media-content-link-external"
+        tal:attributes="href content.get_external_url()" />
+  </div>
 </div>

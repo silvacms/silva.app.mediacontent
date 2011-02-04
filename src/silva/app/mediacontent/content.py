@@ -25,8 +25,10 @@ _ = MessageFactory('silva')
 
 def set_reference(content, target, name):
     service = getUtility(IReferenceService)
+    if target is None:
+        service.delete_reference(content, name)
     reference = service.get_reference(
-        aq_inner(content), name=name, add=False)
+        aq_inner(content), name=name, add=True)
     if not isinstance(target, int):
         target = get_content_id(target)
     reference.set_target_id(target)
@@ -34,8 +36,10 @@ def set_reference(content, target, name):
 def get_reference(content, name):
     service = getUtility(IReferenceService)
     reference = service.get_reference(
-        aq_inner(content), name=name, add=True)
-    return reference.target
+        aq_inner(content), name=name, add=False)
+    if reference:
+        return reference.target
+    return None
 
 
 class MediaContentVersion(Version):
@@ -43,9 +47,11 @@ class MediaContentVersion(Version):
     """
     grok.implements(interfaces.IMediaContentVersion)
 
+    meta_type = meta_type = 'Silva Media Content Version'
     security = ClassSecurityInfo()
 
     _text = None
+    _external_url = None
 
     security.declareProtected(perms.View, 'get_text')
     def get_text(self):
@@ -72,6 +78,14 @@ class MediaContentVersion(Version):
     def set_link(self, target):
         return set_reference(self, target, u'link')
 
+    security.declareProtected(perms.View, 'get_external_url')
+    def get_external_url(self):
+        return self._external_url
+
+    security.declareProtected(perms.ChangeSilvaContent, 'set_external_url')
+    def set_external_url(self, url):
+        self._external_url = url
+        return self._external_url
 
 InitializeClass(MediaContentVersion)
 
@@ -84,7 +98,7 @@ class MediaContent(VersionedContent):
     silvaconf.version_class(MediaContentVersion)
     silvaconf.icon('mediacontent.png')
 
-    meta_type = 'Silva MediaContent'
+    meta_type = 'Silva Media Content'
     security = ClassSecurityInfo()
 
 
@@ -122,7 +136,7 @@ class MediaContentAddForm(silvaforms.SMIAddForm):
     """SMI add form for media content.
     """
     grok.context(interfaces.IMediaContent)
-    grok.name(u'Silva MediaContent')
+    grok.name(u'Silva Media Content')
     fields = silvaforms.Fields(ITitledContent, interfaces.IMediaContentFields)
 
 

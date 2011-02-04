@@ -25,31 +25,33 @@ class IMediaContentFields(Interface):
     """ Fields for forms
     """
     text = schema.Text(
-        title=_('text'),
-        description=_('Plain text or restructured text format'),
+        title=_(u'text'),
+        description=_(u'Plain text or restructured text format.'),
         required=False)
     asset = Reference(interfaces.INonPublishable,
-        title=_('asset'),
-        description=_('Image or video asset'),
+        title=_(u'asset'),
+        description=_(u'Image or video asset.'),
         required=False)
     link = Reference(interfaces.ISilvaObject,
-        title=_('link'),
-        description=_('Link target for more information'),
+        title=_(u'link'),
+        description=_(u'Link target for more information.'),
+        required=False)
+    external_url = schema.URI(
+        title=_(u"external url"),
+        description=_(u"only used if link is not set."),
         required=False)
 
 
-class IYouTubeVideo(interfaces.INonPublishable):
-    """ A video linked from you tube
+class IEmbed(interfaces.INonPublishable):
+    """ embed html.
     """
 
 
-class IYouTubeVideoFields(Interface):
+class IEmbedFields(Interface):
     """ Fields for forms.
     """
-    video_id = schema.TextLine(
-        title=_(u'video id'),
-        description=_(u'Tt is the id of the video on youtube.com,'
-                      u'it can be found in the url as "v" parameter'),
+    html = schema.Text(
+        title=_(u'raw html'),
         required=True)
 
 
