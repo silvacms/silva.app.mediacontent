@@ -102,7 +102,7 @@ class MediaContent(VersionedContent):
     security = ClassSecurityInfo()
 
 
-InitializeClass(MediaContentVersion)
+InitializeClass(MediaContent)
 
 
 class MediaContentView(silvaviews.View):
