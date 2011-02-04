@@ -11,18 +11,18 @@ _ = MessageFactory('silva')
 
 
 class IMediaContent(interfaces.IVersionedContent):
-    """ A simple content type with title description and a reference
+    """A simple content type with title description and a reference
     to an image or video
     """
 
 
 class IMediaContentVersion(interfaces.IVersion):
-    """ Version for IMediaContent
+    """Version for IMediaContent
     """
 
 
 class IMediaContentFields(Interface):
-    """ Fields for forms
+    """Fields for forms
     """
     text = schema.Text(
         title=_(u'text'),
@@ -38,17 +38,17 @@ class IMediaContentFields(Interface):
         required=False)
     external_url = schema.URI(
         title=_(u"external url"),
-        description=_(u"only used if link is not set."),
+        description=_(u"Only used if link is not set."),
         required=False)
 
 
 class IEmbed(interfaces.INonPublishable):
-    """ embed html.
+    """Embed html content.
     """
 
 
 class IEmbedFields(Interface):
-    """ Fields for forms.
+    """Fields for forms.
     """
     html = schema.Text(
         title=_(u'raw html'),
