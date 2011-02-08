@@ -1,8 +1,8 @@
 Changes
--------
+=======
 
+1.0b1 (2010-02-08)
+------------------
 
-1.0 (unreleased)
-----------------
-- first implementation
+- Initial release
 
