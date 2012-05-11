@@ -13,7 +13,7 @@ def read_file(path):
         fd.close()
 
 
-version = '1.0'
+version = '1.1dev'
 
 tests_require = []
 
