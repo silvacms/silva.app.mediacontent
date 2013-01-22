@@ -7,7 +7,8 @@
 
   <include package="five.grok" />
   <include package="silva.core.conf" />
-  <include package="Products.Silva" />
+  <include package="silva.core.views" />
+  <include package="silva.core.contentlayout" />
   <include package="zeam.form.silva" />
 
   <grok:grok package="." />
