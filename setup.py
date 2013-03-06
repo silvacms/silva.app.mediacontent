@@ -13,7 +13,7 @@ def read_file(path):
         fd.close()
 
 
-version = '1.1dev'
+version = '3.0'
 
 tests_require = []
 
@@ -41,13 +41,24 @@ setup(name='silva.app.mediacontent',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-        'docutils',
-        'five.grok',
         'Products.Silva',
+        'five.grok',
         'setuptools',
         'silva.core.conf',
+        'silva.core.contentlayout',
+        'silva.core.editor',
+        'silva.core.interfaces',
+        'silva.core.references',
+        'silva.core.views',
+        'silva.fanstatic',
+        'silva.translations',
         'zeam.form.silva',
+        'zope.component',
+        'zope.event',
+        'zope.i18nmessageid',
         'zope.interface',
+        'zope.lifecycleevent',
+        'zope.publisher',
         'zope.schema',
         ],
       tests_require = tests_require,

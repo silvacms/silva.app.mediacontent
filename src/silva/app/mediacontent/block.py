@@ -60,6 +60,8 @@ class SlideshowRender(object):
         self.contents = []
         for content in self.container.get_ordered_publishables(IMediaContent):
             version = content.get_viewable()
+            if version is None:
+                continue
             info = {
                 'title': version.get_title(),
                 'text': version.get_text().strip(),

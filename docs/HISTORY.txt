@@ -1,10 +1,13 @@
 Changes
 =======
 
-1.1 (unreleased)
+3.0 (2013/03/06)
 ----------------
 
-- ...
+- Add a block for ``silva.core.contentlayout`` generating a slideshow
+  out of a folder of media content.
+
+- Update media content to use a rich text.
 
 1.0 (2012-05-11)
 ----------------
