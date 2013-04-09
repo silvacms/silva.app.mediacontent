@@ -15,7 +15,9 @@ def read_file(path):
 
 version = '3.0.1dev'
 
-tests_require = []
+tests_require = [
+    'Products.Silva [test]',
+    'silva.core.contentlayout [test]']
 
 setup(name='silva.app.mediacontent',
       version=version,

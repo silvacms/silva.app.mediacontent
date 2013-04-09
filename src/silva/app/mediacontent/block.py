@@ -31,8 +31,10 @@ class SlideshowBlock(Block):
     grok.order(20)
     silvaconf.icon('mediacontent.png')
 
-    def __init__(self):
-        self.identifier = unicode(uuid.uuid1())
+    def __init__(self, identifier=None):
+        if identifier is None:
+            identifier = unicode(uuid.uuid1())
+        self.identifier = identifier
 
 
 class ISlideshowResources(IDefaultBrowserLayer):
