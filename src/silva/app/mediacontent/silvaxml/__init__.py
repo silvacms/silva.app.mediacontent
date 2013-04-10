@@ -3,7 +3,7 @@
 # See also LICENSE.txt
 # package
 
-from silva.core.xml import NS_SILVA_URI, registerNamespace
+from silva.core.xml import registerNamespace
 
-NS_MEDIACONTENT_URI = NS_SILVA_URI + '/silva-app-mediacontent'
-registerNamespace('mediacontent', NS_MEDIACONTENT_URI)
+NS_MEDIACONTENT_URI = 'http://infrae.com/namespace/silva-app-mediacontent'
+registerNamespace('silva-app-mediacontent', NS_MEDIACONTENT_URI)

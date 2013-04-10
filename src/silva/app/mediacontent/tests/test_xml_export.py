@@ -20,10 +20,24 @@ class MediaContentXMLExportTestCase(SilvaXMLTestCase):
         self.layer.login('chiefeditor')
         factory = self.root.manage_addProduct['Silva']
         factory.manage_addFolder('export', 'Export')
-        factory = self.root.export.manage_addProduct['Silva']
-        factory.manage_addFolder('images', 'Images')
+
+    def test_export_mediacontent(self):
+        factory = self.root.export.manage_addProduct['silva.app.mediacontent']
+        factory.manage_addMediaContent('bear', 'Bear')
+        content = self.root.export._getOb('bear')
+        version = content.get_editable()
+        version.set_external_url('http://infrae.com')
+
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_mediacontent.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
     def test_export_sildeshow_block(self):
+        factory = self.root.export.manage_addProduct['Silva']
+        factory.manage_addFolder('images', 'Images')
         factory = self.root.export.manage_addProduct['silva.core.contentlayout']
         factory.manage_addMockupPage('page', 'Page')
 
