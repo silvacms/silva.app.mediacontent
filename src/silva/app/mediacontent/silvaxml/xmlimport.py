@@ -1,7 +1,13 @@
 
+from zope.publisher.browser import TestRequest
+from zeam.component import getWrapper
+
+from silva.app.mediacontent.block import SlideshowBlock
 from silva.app.mediacontent.silvaxml import NS_MEDIACONTENT_URI
 from silva.core import conf as silvaconf
+from silva.core.contentlayout.silvaxml.xmlimport import BlockHandler
 from silva.core.xml import NS_SILVA_URI, handlers
+from silva.core.contentlayout.interfaces import IBlockController
 
 silvaconf.namespace(NS_MEDIACONTENT_URI)
 
@@ -59,4 +65,30 @@ class MediaContentVersionHandler(handlers.SilvaVersionHandler):
             self.updateVersionCount()
             self.storeMetadata()
             self.storeWorkflow()
+
+
+class AgendaInfoBlockHandler(BlockHandler):
+    silvaconf.name('agendainfoblock')
+
+    def startElementNS(self, name, qname, attrs):
+        if name == (NS_MEDIACONTENT_URI, 'slideshowblock'):
+            path = attrs[(None, 'slideshow')]
+            block = SlideshowBlock()
+            page = self.parentHandler().parent()
+            importer = self.getExtra()
+            self._block = block
+
+            def set_target(target):
+                controller = getWrapper(
+                    (block, page, TestRequest()),
+                    IBlockController)
+                controller.content = target
+
+            importer.resolveImportedPath(page, set_target, path)
+            self._block = block
+
+    def endElementNS(self, name, qname):
+        if name == (NS_MEDIACONTENT_URI, 'slideshowblock'):
+            self.add_block(self._block)
+            self._block = None
 
