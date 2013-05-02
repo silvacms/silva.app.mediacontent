@@ -11,6 +11,7 @@ from silva.core.contentlayout.interfaces import IBlockController
 
 silvaconf.namespace(NS_MEDIACONTENT_URI)
 
+
 class MediaContentHandler(handlers.SilvaHandler):
     silvaconf.name('mediacontent')
 

@@ -13,6 +13,8 @@ from zope.lifecycleevent import ObjectModifiedEvent
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.publisher.interfaces.http import IHTTPRequest
 
+import js.jquery
+
 from silva.core import conf as silvaconf
 from silva.core.contentlayout.blocks import Block, BlockController
 from silva.core.contentlayout.interfaces import IPage
@@ -38,6 +40,7 @@ class SlideshowBlock(Block):
 
 
 class ISlideshowResources(IDefaultBrowserLayer):
+    silvaconf.resource(js.jquery.jquery)
     silvaconf.resource('slideshow.js')
     silvaconf.resource('slideshow.css')
 
