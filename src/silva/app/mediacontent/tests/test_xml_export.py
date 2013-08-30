@@ -4,7 +4,7 @@
 
 import unittest
 
-from Products.Silva.testing import TestRequest
+from Products.Silva.testing import TestRequest, Transaction
 from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
 
 from silva.core.contentlayout.interfaces import IBlockManager, IBlockController
@@ -20,16 +20,18 @@ class MediaContentXMLExportTestCase(SilvaXMLTestCase):
 
     def setUp(self):
         self.root = self.layer.get_application()
-        self.layer.login('chiefeditor')
-        factory = self.root.manage_addProduct['Silva']
-        factory.manage_addFolder('export', 'Export')
+        with Transaction():
+            self.layer.login('chiefeditor')
+            factory = self.root.manage_addProduct['Silva']
+            factory.manage_addFolder('export', 'Export')
 
     def test_export_mediacontent(self):
-        factory = self.root.export.manage_addProduct['silva.app.mediacontent']
-        factory.manage_addMediaContent('bear', 'Bear')
-        content = self.root.export._getOb('bear')
-        version = content.get_editable()
-        version.set_external_url('http://infrae.com')
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.mediacontent']
+            factory.manage_addMediaContent('bear', 'Bear')
+            content = self.root.export._getOb('bear')
+            version = content.get_editable()
+            version.set_external_url('http://infrae.com')
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -39,20 +41,21 @@ class MediaContentXMLExportTestCase(SilvaXMLTestCase):
         self.assertEqual(exporter.getProblems(), [])
 
     def test_export_sildeshow_block(self):
-        factory = self.root.export.manage_addProduct['Silva']
-        factory.manage_addFolder('images', 'Images')
-        factory = self.root.export.manage_addProduct['silva.core.contentlayout']
-        factory.manage_addMockupPage('page', 'Page')
+        with Transaction():
+            factory = self.root.export.manage_addProduct['Silva']
+            factory.manage_addFolder('images', 'Images')
+            factory = self.root.export.manage_addProduct['silva.core.contentlayout']
+            factory.manage_addMockupPage('page', 'Page')
 
-        page = self.root.export.page
-        version = page.get_editable()
-        version.set_design(registry.lookup_design_by_name('adesign'))
-        slideshow = SlideshowBlock(u'slideshow 1')
-        controller = getWrapper(
-            (slideshow, version, TestRequest()),
-            IBlockController)
-        controller.container = self.root.export.images
-        IBlockManager(version).add('one', slideshow)
+            page = self.root.export.page
+            version = page.get_editable()
+            version.set_design(registry.lookup_design_by_name('adesign'))
+            slideshow = SlideshowBlock(u'slideshow 1')
+            controller = getWrapper(
+                (slideshow, version, TestRequest()),
+                IBlockController)
+            controller.container = self.root.export.images
+            IBlockManager(version).add('one', slideshow)
 
         exporter = self.assertExportEqual(
             self.root.export,
