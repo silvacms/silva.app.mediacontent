@@ -13,7 +13,7 @@ def read_file(path):
         fd.close()
 
 
-version = '3.0.2dev'
+version = '3.0.2'
 
 tests_require = [
     'Products.Silva [test]',
